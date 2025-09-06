@@ -1,6 +1,8 @@
-import { Plus, Search, Bell, Settings } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NotificationDropdown } from "./NotificationDropdown";
+import { SettingsDropdown } from "./SettingsDropdown";
 
 interface HeaderProps {
   onCreateProject: () => void;
@@ -29,12 +31,8 @@ export const Header = ({ onCreateProject, onCreateTask }: HeaderProps) => {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon">
-            <Bell className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon">
-            <Settings className="h-4 w-4" />
-          </Button>
+          <NotificationDropdown />
+          <SettingsDropdown />
           <div className="w-px h-6 bg-border" />
           <Button 
             onClick={onCreateTask}

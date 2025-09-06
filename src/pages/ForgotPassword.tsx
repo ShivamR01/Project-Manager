@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ArrowLeft, Loader2, Mail } from "lucide-react";
+import { ArrowLeft, Loader2, Mail, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -53,34 +53,50 @@ const ForgotPassword = () => {
 
   if (emailSent) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
-          <Card className="border-border bg-card shadow-card">
-            <CardHeader className="text-center">
-              <div className="mx-auto mb-4 w-16 h-16 bg-success/10 rounded-full flex items-center justify-center">
-                <Mail className="h-8 w-8 text-success" />
+          {/* Logo/Brand */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                <span className="text-primary-foreground font-bold text-xl">PM</span>
               </div>
-              <CardTitle className="text-2xl">Check your email</CardTitle>
-              <CardDescription>
-                We've sent password reset instructions to {form.getValues("email")}
+              <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                ProjectManager
+              </h1>
+            </div>
+          </div>
+
+          <Card className="border-0 bg-card/95 backdrop-blur shadow-elegant">
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto mb-6 w-16 h-16 bg-success/10 rounded-full flex items-center justify-center">
+                <CheckCircle className="h-8 w-8 text-success" />
+              </div>
+              <CardTitle className="text-2xl font-bold">Check your email</CardTitle>
+              <CardDescription className="text-muted-foreground">
+                We've sent password reset instructions to<br />
+                <span className="font-medium text-foreground">{form.getValues("email")}</span>
               </CardDescription>
             </CardHeader>
-            <CardContent className="text-center space-y-4">
-              <p className="text-sm text-muted-foreground">
-                Didn't receive the email? Check your spam folder or try again with a different email address.
-              </p>
+            <CardContent className="text-center space-y-6">
+              <div className="p-4 bg-muted/50 rounded-lg border border-muted">
+                <p className="text-sm text-muted-foreground">
+                  Didn't receive the email? Check your spam folder or try again with a different email address.
+                </p>
+              </div>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Button
                   onClick={() => setEmailSent(false)}
                   variant="outline"
-                  className="w-full"
+                  className="w-full h-11"
                 >
                   Try another email
                 </Button>
                 <Button
                   onClick={() => navigate("/login")}
-                  className="w-full"
+                  variant="gradient"
+                  className="w-full h-11"
                 >
                   Back to login
                 </Button>
@@ -93,37 +109,39 @@ const ForgotPassword = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo/Brand */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">PM</span>
+          <div className="inline-flex items-center gap-3 mb-6">
+            <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+              <span className="text-primary-foreground font-bold text-xl">PM</span>
             </div>
-            <h1 className="text-2xl font-bold text-foreground">ProjectManager</h1>
+            <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              ProjectManager
+            </h1>
           </div>
-          <p className="text-muted-foreground">Reset your password</p>
+          <p className="text-muted-foreground text-lg">Reset your password securely</p>
         </div>
 
-        <Card className="border-border bg-card shadow-card">
-          <CardHeader className="space-y-1">
-            <div className="flex items-center gap-2 mb-2">
+        <Card className="border-0 bg-card/95 backdrop-blur shadow-elegant">
+          <CardHeader className="space-y-2 pb-4">
+            <div className="flex items-center gap-3 mb-2">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate("/login")}
-                className="h-8 w-8"
+                className="h-9 w-9 hover:bg-muted/50"
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <CardTitle className="text-2xl">Forgot password?</CardTitle>
+              <CardTitle className="text-2xl font-bold">Forgot password?</CardTitle>
             </div>
-            <CardDescription>
-              No worries! Enter your email address and we'll send you a link to reset your password.
+            <CardDescription className="text-muted-foreground">
+              No worries! Enter your email address and we'll send you a secure link to reset your password.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
@@ -131,14 +149,14 @@ const ForgotPassword = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>Email Address</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                           <Input
                             type="email"
                             placeholder="Enter your email address"
-                            className="pl-10"
+                            className="pl-10 h-11"
                             {...field}
                           />
                         </div>
@@ -151,19 +169,29 @@ const ForgotPassword = () => {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-gradient-primary hover:opacity-90"
+                  variant="gradient"
+                  className="w-full h-12"
                 >
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Send reset instructions
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Sending Instructions...
+                    </>
+                  ) : (
+                    "Send Reset Instructions"
+                  )}
                 </Button>
               </form>
             </Form>
 
-            <div className="mt-6 text-center">
+            <div className="text-center">
               <p className="text-sm text-muted-foreground">
                 Remember your password?{" "}
-                <Link to="/login" className="text-primary hover:underline">
-                  Sign in
+                <Link 
+                  to="/login" 
+                  className="text-primary hover:text-primary/80 font-medium transition-colors hover:underline"
+                >
+                  Sign in here
                 </Link>
               </p>
             </div>
