@@ -1,0 +1,10 @@
+// components/ui/index.ts
+export * from "./button"
+export * from "./input"
+export * from "./card"
+export * from "./avatar"
+export * from "./tabs"
+export * from "./form"
+export * from "./select"
+export * from "./switch"
+export * from "./separator"
