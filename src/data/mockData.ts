@@ -1,4 +1,4 @@
-import { Project } from "@/types";
+import { Project, TeamMember } from "@/types";
 
 export const mockProjects: Project[] = [
   {
@@ -176,5 +176,40 @@ export const mockProjects: Project[] = [
         projectId: "4"
       }
     ]
+  }
+];
+
+export const mockTeamMembers: TeamMember[] = [
+  {
+    id: "1",
+    name: "Sarah Chen",
+    email: "sarah.chen@example.com",
+    role: "UI/UX Designer",
+    avatar: "SC",
+    assignedProjects: 3
+  },
+  {
+    id: "2", 
+    name: "Mike Johnson",
+    email: "mike.johnson@example.com",
+    role: "Full Stack Developer",
+    avatar: "MJ",
+    assignedProjects: 2
+  },
+  {
+    id: "3",
+    name: "Emma Davis", 
+    email: "emma.davis@example.com",
+    role: "Project Manager",
+    avatar: "ED",
+    assignedProjects: 4
+  },
+  {
+    id: "4",
+    name: "Alex Thompson",
+    email: "alex.thompson@example.com", 
+    role: "Backend Developer",
+    avatar: "AT",
+    assignedProjects: 2
   }
 ];
