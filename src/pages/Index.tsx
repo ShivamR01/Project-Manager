@@ -1,40 +1,28 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Dashboard } from "@/components/dashboard/Dashboard";
 import { mockProjects } from "@/data/mockData";
 import { Project, Task } from "@/types";
-import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [projects] = useState<Project[]>(mockProjects);
-  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleProjectClick = (project: Project) => {
-    toast({
-      title: "Project Selected",
-      description: `Opening ${project.name} project details...`,
-    });
+    navigate(`/projects/${project.id}`);
   };
 
   const handleTaskClick = (task: Task) => {
-    toast({
-      title: "Task Selected", 
-      description: `Opening task: ${task.title}`,
-    });
+    navigate(`/tasks/${task.id}`);
   };
 
   const handleCreateProject = () => {
-    toast({
-      title: "Create Project",
-      description: "Project creation dialog would open here...",
-    });
+    navigate("/projects/new");
   };
 
   const handleCreateTask = () => {
-    toast({
-      title: "Create Task",
-      description: "Task creation dialog would open here...",
-    });
+    navigate("/tasks/new");
   };
 
   return (
