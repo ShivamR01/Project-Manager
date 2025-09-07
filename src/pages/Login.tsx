@@ -156,176 +156,179 @@ export default function Login() {
   return (
     <div className="min-h-screen flex overflow-hidden">
       {/* LEFT PANEL */}
-      <div className="hidden md:flex w-1/3 relative">
-        {/* Three.js canvas will be injected here */}
-        <div ref={leftPanelRef} className="absolute inset-0" />
+      <div className="hidden md:flex w-1/3 relative flex-col items-center justify-center">
+  {/* Text content above the globe */}
+  <div className="absolute top-10 left-1/2 transform -translate-x-1/2 text-center z-20">
+    <h1 className="text-4xl font-extrabold text-white drop-shadow-lg">
+      Welcome to <span className="text-teal-300">ProjectManager</span>
+    </h1>
+    <p className="mt-2 text-gray-300 text-lg max-w-xs mx-auto">
+      Organize your projects, tasks, and team efficiently with a modern and intuitive interface.
+    </p>
+  </div>
 
-        {/* Optional overlay to improve text contrast */}
-        <div className="absolute inset-0 bg-black/30" />
+  {/* Three.js canvas shifted downward */}
+  <div ref={leftPanelRef} className="absolute inset-0 z-10 translate-y-16" />
 
-        {/* Text content */}
-        <div className="absolute bottom-10 left-10 text-white text-3xl font-bold drop-shadow-lg">
-          Welcome to <span className="text-teal-300">ProjectManager</span>
-        </div>
-      </div>
+  {/* Optional overlay to improve text contrast */}
+  <div className="absolute inset-0 bg-black/30 z-0" />
+</div>
+
+
 
       {/* CENTER PANEL - LOGIN CARD */}
-      <div className="flex-1 flex items-center justify-center p-8 relative z-10 bg-gray-50 perspective-1000">
-        <button
-          onClick={() => navigate("/")}
-          className="absolute top-4 left-4 text-gray-700 hover:text-gray-500 transition-colors z-20"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
+      {/* RIGHT PANEL (Full login form, no card) */}
+  {/* RIGHT PANEL (Dark background + Card for login) */}
+<div className="flex-1 flex items-center justify-center px-6 bg-gray-900 text-white relative">
+  {/* Back button */}
+  <button
+    onClick={() => navigate("/")}
+    className="absolute top-4 left-4 text-gray-400 hover:text-gray-200 transition-colors"
+  >
+    <ArrowLeft className="w-6 h-6" />
+  </button>
 
-        <Card
-          className="w-full max-w-md bg-white/90 backdrop-blur-md rounded-3xl border border-gray-200/30 shadow-2xl transform transition-transform duration-300 hover:rotate-y-2 hover:-rotate-x-2 hover:shadow-3xl"
-          style={{ perspective: "1000px" }}
-        >
-          <CardHeader className="text-center space-y-2 p-6">
-            <CardTitle className="text-3xl font-extrabold text-gray-900 tracking-tight">
-              Sign In
-            </CardTitle>
-            <CardDescription className="text-gray-600 text-lg">
-              Access your account to continue
-            </CardDescription>
-          </CardHeader>
+  {/* Login Card */}
+  <Card className="w-full max-w-md bg-gray-800/90 backdrop-blur-md rounded-2xl border border-gray-700 shadow-xl p-6">
+    <CardHeader className="text-center space-y-2">
+      <CardTitle className="text-3xl font-bold text-white">
+        Sign In
+      </CardTitle>
+      <CardDescription className="text-gray-400 text-base">
+        Access your account to continue
+      </CardDescription>
+    </CardHeader>
 
-          <CardContent className="space-y-6 px-6 pb-6">
-            <Button
-              variant="outline"
-              className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-100 border border-gray-300 text-gray-700 font-medium shadow-sm transition-transform transform hover:scale-105"
-              onClick={handleGoogleLogin}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <Loader2 className="animate-spin h-5 w-5" />
-              ) : (
-                <Chrome className="h-5 w-5 text-blue-500" />
-              )}
-              Continue with Google
-            </Button>
+    <CardContent className="space-y-6">
+      {/* Google Button */}
+      <Button
+        variant="outline"
+        className="w-full flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 text-gray-200 font-medium shadow-sm transition-transform transform hover:scale-105"
+        onClick={handleGoogleLogin}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <Loader2 className="animate-spin h-5 w-5" />
+        ) : (
+          <Chrome className="h-5 w-5 text-blue-400" />
+        )}
+        Continue with Google
+      </Button>
 
-            {/* Divider */}
-            <div className="relative text-center my-4">
-              <div className="absolute inset-0 flex items-center">
-                <div className="border-t w-full border-gray-300/50" />
-              </div>
-              <span className="relative px-2 bg-white text-sm text-gray-500 font-medium">
-                Or use email
-              </span>
-            </div>
-
-            {/* Form */}
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
-                {/* Email */}
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-700 font-medium">
-                        Email
-                      </FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
-                          <Input
-                            {...field}
-                            className="pl-12 h-12 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-400 transition bg-white"
-                            placeholder="Enter your email"
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage className="text-red-500 text-sm mt-1" />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Password */}
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-700 font-medium">
-                        Password
-                      </FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
-                          <Input
-                            {...field}
-                            type={showPassword ? "text" : "password"}
-                            className="pl-12 pr-12 h-12 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-400 transition bg-white"
-                            placeholder="Enter your password"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition-colors"
-                          >
-                            {showPassword ? (
-                              <EyeOff className="h-5 w-5" />
-                            ) : (
-                              <Eye className="h-5 w-5" />
-                            )}
-                          </button>
-                        </div>
-                      </FormControl>
-                      <FormMessage className="text-red-500 text-sm mt-1" />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Remember & Forgot */}
-                <div className="flex items-center justify-between">
-                  <FormField
-                    control={form.control}
-                    name="rememberMe"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center space-x-3">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormLabel className="text-sm text-gray-600 font-normal">
-                          Remember me
-                        </FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                  <Link
-                    to="/forgot-password"
-                    className="text-sm text-blue-600 hover:underline"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-
-                {/* Submit */}
-                <Button
-                  type="submit"
-                  variant="gradient"
-                  className="w-full h-12 rounded-xl text-lg font-semibold shadow-md hover:shadow-lg transition-transform transform hover:scale-105"
-                >
-                  {isLoading ? (
-                    <Loader2 className="animate-spin h-5 w-5" />
-                  ) : (
-                    "Sign In"
-                  )}
-                </Button>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
+      {/* Divider */}
+      <div className="relative text-center my-4">
+        <div className="absolute inset-0 flex items-center">
+          <div className="border-t w-full border-gray-700" />
+        </div>
+        <span className="relative px-2 bg-gray-800 text-sm text-gray-400">
+          Or use email
+        </span>
       </div>
+
+      {/* Login Form */}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+          {/* Email */}
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-gray-300">Email</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 h-5 w-5" />
+                    <Input
+                      {...field}
+                      className="pl-12 h-12 rounded-xl border border-gray-700 bg-gray-900 text-white placeholder-gray-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-400"
+                      placeholder="Enter your email"
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage className="text-red-400 text-sm mt-1" />
+              </FormItem>
+            )}
+          />
+
+          {/* Password */}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-gray-300">Password</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 h-5 w-5" />
+                    <Input
+                      {...field}
+                      type={showPassword ? "text" : "password"}
+                      className="pl-12 pr-12 h-12 rounded-xl border border-gray-700 bg-gray-900 text-white placeholder-gray-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-400"
+                      placeholder="Enter your password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                </FormControl>
+                <FormMessage className="text-red-400 text-sm mt-1" />
+              </FormItem>
+            )}
+          />
+
+          {/* Remember & Forgot */}
+          <div className="flex items-center justify-between">
+            <FormField
+              control={form.control}
+              name="rememberMe"
+              render={({ field }) => (
+                <FormItem className="flex items-center space-x-3">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className="border-gray-600 text-teal-400"
+                    />
+                  </FormControl>
+                  <FormLabel className="text-sm text-gray-400 font-normal">
+                    Remember me
+                  </FormLabel>
+                </FormItem>
+              )}
+            />
+            <Link
+              to="/forgot-password"
+              className="text-sm text-teal-400 hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
+
+          {/* Submit */}
+          <Button
+            type="submit"
+            className="w-full h-12 rounded-xl text-lg font-semibold shadow-lg bg-teal-500 hover:bg-teal-400 text-white transition-transform transform hover:scale-105"
+          >
+            {isLoading ? (
+              <Loader2 className="animate-spin h-5 w-5" />
+            ) : (
+              "Sign In"
+            )}
+          </Button>
+        </form>
+      </Form>
+    </CardContent>
+  </Card>
+</div>
+
     </div>
   );
 }

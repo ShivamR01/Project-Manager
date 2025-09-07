@@ -102,23 +102,37 @@ export const Features = () => {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               whileHover={{ y: -5 }}
             >
-              <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                <CardHeader>
-                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} p-3 mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <div className="text-white">
-                      {feature.icon}
-                    </div>
-                  </div>
-                  <CardTitle className="text-xl group-hover:text-primary transition-colors">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
+              <Card className="h-full border border-white/10 relative rounded-2xl overflow-hidden bg-white/10 backdrop-blur-xl shadow-lg transition-all duration-500 group hover:scale-[1.04] hover:rotate-[1deg] hover:shadow-2xl hover:shadow-primary/40">
+  {/* Glass Glow Overlay */}
+  <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-secondary/20 opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-500" />
+
+  {/* Frosted Highlight Edge */}
+  <div className="absolute inset-0 rounded-2xl border border-white/20 pointer-events-none" />
+
+  {/* Inner Card */}
+  <div className="relative z-10 p-6">
+    <CardHeader>
+      <div
+        className={`w-14 h-14 flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg transform group-hover:scale-125 group-hover:rotate-6 transition-transform duration-500`}
+      >
+        <div className="text-white text-2xl">{feature.icon}</div>
+      </div>
+      <CardTitle className="mt-4 text-2xl font-bold text-white drop-shadow-md group-hover:text-primary transition-colors">
+        {feature.title}
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <p className="text-gray-200 leading-relaxed group-hover:text-gray-100 transition-colors">
+        {feature.description}
+      </p>
+    </CardContent>
+  </div>
+
+  {/* Glassy Bottom Glow Bar */}
+  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-primary opacity-0 group-hover:opacity-100 backdrop-blur-md transition-opacity duration-500" />
+</Card>
+
+
             </motion.div>
           ))}
         </div>

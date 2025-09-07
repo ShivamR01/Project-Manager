@@ -25,49 +25,64 @@ export const ProjectCard = ({ project, onClick }: ProjectCardProps) => {
   const totalTasks = project.tasks.length;
 
   return (
-    <Card 
-      className="cursor-pointer transition-all duration-300 hover:shadow-glow hover:scale-105 hover:border-primary/50 bg-card shadow-card"
-      onClick={onClick}
-    >
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <CardTitle className="text-lg font-semibold text-foreground truncate">
-            {project.name}
-          </CardTitle>
-          <Badge className={`ml-2 ${getStatusColor(project.status)} text-xs`}>
-            {project.status}
-          </Badge>
-        </div>
-        <p className="text-sm text-muted-foreground line-clamp-2">
-          {project.description}
-        </p>
-      </CardHeader>
-      
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Progress</span>
-            <span className="text-foreground font-medium">{project.progress}%</span>
-          </div>
-          <Progress value={project.progress} className="h-2" />
-        </div>
+    <Card
+  className="cursor-pointer relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-lg shadow-xl transition-all duration-500 hover:scale-[1.03] hover:shadow-2xl hover:shadow-primary/30 hover:border-primary/40"
+  onClick={onClick}
+>
+  {/* Glow effect */}
+  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-primary/20 via-transparent to-secondary/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
 
-        <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center gap-1 text-muted-foreground">
-            <CheckCircle2 className="h-4 w-4" />
-            <span>{completedTasks}/{totalTasks} tasks</span>
-          </div>
-          <div className="flex items-center gap-1 text-muted-foreground">
-            <Clock className="h-4 w-4" />
-            <span>Due {formatDistanceToNow(project.dueDate, { addSuffix: true })}</span>
-          </div>
-        </div>
+  <CardHeader className="relative z-10 pb-3">
+    <div className="flex items-start justify-between">
+      <CardTitle className="text-lg font-semibold text-white/90 truncate group-hover:text-white transition-colors">
+        {project.name}
+      </CardTitle>
+      <Badge
+        className={`ml-2 ${getStatusColor(
+          project.status
+        )} text-xs backdrop-blur-sm bg-white/10`}
+      >
+        {project.status}
+      </Badge>
+    </div>
+    <p className="text-sm text-gray-300 line-clamp-2">{project.description}</p>
+  </CardHeader>
 
-        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-          <Calendar className="h-4 w-4" />
-          <span>Created {formatDistanceToNow(project.createdAt, { addSuffix: true })}</span>
-        </div>
-      </CardContent>
-    </Card>
+  <CardContent className="relative z-10 space-y-4">
+    <div className="space-y-2">
+      <div className="flex items-center justify-between text-sm">
+        <span className="text-gray-400">Progress</span>
+        <span className="text-white/90 font-medium">{project.progress}%</span>
+      </div>
+      <Progress
+        value={project.progress}
+        className="h-2 bg-white/10 [&>div]:bg-gradient-to-r [&>div]:from-primary [&>div]:to-secondary rounded-full"
+      />
+    </div>
+
+    <div className="flex items-center justify-between text-sm">
+      <div className="flex items-center gap-1 text-gray-400">
+        <CheckCircle2 className="h-4 w-4" />
+        <span>
+          {completedTasks}/{totalTasks} tasks
+        </span>
+      </div>
+      <div className="flex items-center gap-1 text-gray-400">
+        <Clock className="h-4 w-4" />
+        <span>
+          Due {formatDistanceToNow(project.dueDate, { addSuffix: true })}
+        </span>
+      </div>
+    </div>
+
+    <div className="flex items-center gap-1 text-sm text-gray-400">
+      <Calendar className="h-4 w-4" />
+      <span>
+        Created {formatDistanceToNow(project.createdAt, { addSuffix: true })}
+      </span>
+    </div>
+  </CardContent>
+</Card>
+
   );
 };

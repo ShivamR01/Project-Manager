@@ -86,238 +86,252 @@ const NewTask = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-2xl mx-auto">
-        <div className="flex items-center gap-4 mb-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(-1)}
-            className="shrink-0"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Create New Task</h1>
-            <p className="text-muted-foreground">Add a new task to your project</p>
+   <div className="min-h-screen flex flex-col md:flex-row bg-gray-900">
+  
+  {/* LEFT PANEL */}
+<div className="hidden md:flex w-1/3 relative overflow-hidden rounded-tr-3xl rounded-br-3xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-950 p-6">
+  {/* Soft floating blobs */}
+  <div className="absolute w-72 h-72 bg-blue-700/10 rounded-full top-1/4 left-1/4 filter blur-3xl animate-blob" />
+  <div className="absolute w-60 h-60 bg-cyan-500/10 rounded-full top-1/2 left-1/2 filter blur-3xl animate-blob animate-delay-2000" />
+  <div className="absolute w-80 h-80 bg-indigo-500/10 rounded-full top-1/3 left-2/3 filter blur-3xl animate-blob animate-delay-4000" />
+
+  {/* Overlay for subtle contrast */}
+  <div className="absolute inset-0 bg-black/20 rounded-tr-3xl rounded-br-3xl" />
+
+  {/* Centered content */}
+  <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+    <h1 className="text-white text-4xl md:text-5xl font-extrabold drop-shadow-lg">
+      Add Your <span className="text-cyan-400">Task</span>
+    </h1>
+    <p className="mt-4 text-gray-300 text-lg md:text-xl max-w-xs">
+      Quickly create and manage your tasks efficiently to keep your project on track.
+    </p>
+  </div>
+
+  <style>
+    {`
+      @keyframes blob {
+        0%, 100% { transform: translate(0px,0px) scale(1); }
+        33% { transform: translate(15px,-10px) scale(1.05); }
+        66% { transform: translate(-10px,10px) scale(0.95); }
+      }
+      .animate-blob { animation: blob 8s infinite; }
+      .animate-delay-2000 { animation-delay: 2s; }
+      .animate-delay-4000 { animation-delay: 4s; }
+    `}
+  </style>
+</div>
+
+
+  {/* RIGHT PANEL */}
+{/* RIGHT PANEL */}
+<div className="flex-1 p-6 md:p-10 max-w-2xl mx-auto relative">
+  {/* Navigation Arrow */}
+  <Button
+    variant="ghost"
+    size="icon"
+    onClick={() => navigate(-1)}
+    className="absolute top-6 left-2 z-50 text-white text-3xl font-bold shadow-lg hover:text-teal-400 bg-gray-800/50 rounded-full p-5"
+  >
+    <ArrowLeft className="h-12 w-12" />
+  </Button>
+
+  <Card className="shadow-2xl rounded-2xl border-0 bg-gray-900/80 backdrop-blur-md">
+    <CardHeader>
+      <CardTitle className="text-2xl font-bold text-white bg-gradient-to-r from-purple-400 via-indigo-400 to-teal-400 bg-clip-text text-transparent">
+        Task Details
+      </CardTitle>
+      <CardDescription className="text-gray-300">
+        Fill in the information below to create your new task
+      </CardDescription>
+    </CardHeader>
+
+    <CardContent>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          {/* Task Title */}
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-gray-200 font-medium">Task Title</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter task title"
+                    {...field}
+                    className="h-10 rounded-lg bg-gray-800/60 text-white placeholder-gray-400 focus:ring-2 focus:ring-teal-400 hover:bg-gray-800 transition-all"
+                  />
+                </FormControl>
+                <FormMessage className="text-red-400" />
+              </FormItem>
+            )}
+          />
+
+          {/* Description */}
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-gray-200 font-medium">Description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Describe what needs to be done"
+                    className="min-h-[80px] rounded-lg bg-gray-800/60 text-white placeholder-gray-400 focus:ring-2 focus:ring-teal-400 hover:bg-gray-800 transition-all"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-red-400" />
+              </FormItem>
+            )}
+          />
+
+          {/* Due Date */}
+          <FormField
+            control={form.control}
+            name="dueDate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-gray-200 font-medium">Due Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        className={`w-full pl-3 text-left font-normal text-gray-200 hover:bg-gray-800 transition-all`}
+                      >
+                        {field.value ? format(field.value, "PPP") : "Pick a due date"}
+                        <CalendarIcon className="ml-auto h-4 w-4 text-gray-200 opacity-80" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      initialFocus
+                      className="p-3 pointer-events-auto bg-gray-800/70 text-white rounded-lg"
+                      disabled={(date) => date < new Date()}
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage className="text-red-400" />
+              </FormItem>
+            )}
+          />
+
+          {/* Priority & Status */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="priority"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-200 font-medium">Priority</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select priority" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {["low", "medium", "high", "critical"].map((p) => (
+                        <SelectItem key={p} value={p} className={getPriorityColor(p)}>
+                          {p.charAt(0).toUpperCase() + p.slice(1)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage className="text-red-400" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-200 font-medium">Status</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {["todo", "in-progress", "completed"].map((s) => (
+                        <SelectItem key={s} value={s}>
+                          {s.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage className="text-red-400" />
+                </FormItem>
+              )}
+            />
           </div>
-        </div>
 
-        <Card className="border-border bg-card shadow-card">
-          <CardHeader>
-            <CardTitle>Task Details</CardTitle>
-            <CardDescription>
-              Fill in the information below to create your new task
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Task Title</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter task title" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+          {/* Assignee */}
+          <FormField
+            control={form.control}
+            name="assignee"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-gray-200 font-medium">Assignee</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Assign to team member" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {mockTeamMembers.map((m) => (
+                      <SelectItem key={m.id} value={m.id}>
+                        {m.name} - {m.role}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage className="text-red-400" />
+              </FormItem>
+            )}
+          />
 
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Describe what needs to be done"
-                          className="min-h-[80px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+          {/* Buttons */}
+          <div className="flex gap-4 pt-4">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="flex-1 bg-gradient-to-r from-purple-600 via-indigo-500 to-teal-400 hover:opacity-90 shadow-lg text-white"
+            >
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Create Task
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate(-1)}
+              disabled={isLoading}
+              className="flex-1 text-gray-200 border-gray-600 hover:bg-gray-700"
+            >
+              Cancel
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </CardContent>
+  </Card>
+</div>
 
-                <FormField
-                  control={form.control}
-                  name="projectId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Parent Project</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a project" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {mockProjects.map(project => (
-                            <SelectItem key={project.id} value={project.id}>
-                              {project.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
 
-                <FormField
-                  control={form.control}
-                  name="dueDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Due Date</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Pick a due date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            initialFocus
-                            className="p-3 pointer-events-auto"
-                            disabled={(date) => date < new Date()}
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+</div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="priority"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Priority</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select priority" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="low">
-                              <span className={getPriorityColor("low")}>Low</span>
-                            </SelectItem>
-                            <SelectItem value="medium">
-                              <span className={getPriorityColor("medium")}>Medium</span>
-                            </SelectItem>
-                            <SelectItem value="high">
-                              <span className={getPriorityColor("high")}>High</span>
-                            </SelectItem>
-                            <SelectItem value="critical">
-                              <span className={getPriorityColor("critical")}>Critical</span>
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
 
-                  <FormField
-                    control={form.control}
-                    name="status"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Task Status</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select status" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="todo">To Do</SelectItem>
-                            <SelectItem value="in-progress">In Progress</SelectItem>
-                            <SelectItem value="completed">Done</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
 
-                <FormField
-                  control={form.control}
-                  name="assignee"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Assignee</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Assign to team member" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {mockTeamMembers.map(member => (
-                            <SelectItem key={member.id} value={member.id}>
-                              {member.name} - {member.role}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="flex gap-4 pt-4">
-                  <Button
-                    type="submit"
-                    disabled={isLoading}
-                    className="flex-1 bg-gradient-primary hover:opacity-90"
-                  >
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Create Task
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => navigate(-1)}
-                    disabled={isLoading}
-                    className="flex-1"
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
   );
 };
 

@@ -186,46 +186,61 @@ export default function Settings() {
           <div className="flex-1 space-y-8">
             {/* Profile */}
             {activeTab === "profile" && (
-              <Card className="shadow-lg rounded-2xl">
+              <Card className="shadow-2xl rounded-3xl transform transition-transform hover:-translate-y-1 hover:shadow-3xl duration-300">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-lg md:text-xl font-semibold text-primary">
                     <User className="h-5 w-5 text-primary" /> Profile
                     Information
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-muted-foreground">
                     Update your personal information and profile settings
                   </CardDescription>
                 </CardHeader>
+
                 <CardContent>
+                  {/* Avatar Section */}
                   <div className="flex flex-col md:flex-row items-center gap-6 mb-6">
-                    <Avatar className="h-20 w-20 ring-2 ring-primary/20">
-                      <AvatarImage src="/avatars/user.jpg" />
-                      <AvatarFallback>JD</AvatarFallback>
-                    </Avatar>
+                    <div className="relative group">
+                      <Avatar className="h-20 w-20 ring-2 ring-primary/20 transition-transform duration-300 group-hover:scale-105">
+                        <AvatarImage src="/avatars/user.jpg" />
+                        <AvatarFallback>JD</AvatarFallback>
+                      </Avatar>
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="bg-white/20 backdrop-blur-sm hover:bg-white/30"
+                        >
+                          Change Avatar
+                        </Button>
+                      </div>
+                    </div>
                     <div className="text-center md:text-left">
-                      <Button variant="outline" size="sm">
-                        Change Avatar
-                      </Button>
                       <p className="text-xs text-muted-foreground mt-2">
-                        JPG, GIF or PNG. Max size 2MB.
+                        JPG, GIF, or PNG. Max size 2MB.
                       </p>
                     </div>
                   </div>
 
+                  {/* Form */}
                   <Form {...form}>
                     <form
                       onSubmit={form.handleSubmit(onSubmit)}
                       className="space-y-6"
                     >
+                      {/* Name & Email */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <FormField
                           control={form.control}
                           name="name"
                           render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="transition-all duration-300">
                               <FormLabel>Full Name</FormLabel>
                               <FormControl>
-                                <Input {...field} className="rounded-lg" />
+                                <Input
+                                  {...field}
+                                  className="rounded-xl border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -235,13 +250,13 @@ export default function Settings() {
                           control={form.control}
                           name="email"
                           render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="transition-all duration-300">
                               <FormLabel>Email Address</FormLabel>
                               <FormControl>
                                 <Input
                                   type="email"
                                   {...field}
-                                  className="rounded-lg"
+                                  className="rounded-xl border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                 />
                               </FormControl>
                               <FormMessage />
@@ -252,6 +267,7 @@ export default function Settings() {
 
                       <Separator />
 
+                      {/* Password Section */}
                       <div className="space-y-4">
                         <h3 className="font-semibold text-lg">
                           Change Password
@@ -260,13 +276,13 @@ export default function Settings() {
                           control={form.control}
                           name="currentPassword"
                           render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="transition-all duration-300">
                               <FormLabel>Current Password</FormLabel>
                               <FormControl>
                                 <Input
                                   type="password"
                                   {...field}
-                                  className="rounded-lg"
+                                  className="rounded-xl border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                 />
                               </FormControl>
                               <FormMessage />
@@ -278,13 +294,13 @@ export default function Settings() {
                             control={form.control}
                             name="newPassword"
                             render={({ field }) => (
-                              <FormItem>
+                              <FormItem className="transition-all duration-300">
                                 <FormLabel>New Password</FormLabel>
                                 <FormControl>
                                   <Input
                                     type="password"
                                     {...field}
-                                    className="rounded-lg"
+                                    className="rounded-xl border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -295,13 +311,13 @@ export default function Settings() {
                             control={form.control}
                             name="confirmPassword"
                             render={({ field }) => (
-                              <FormItem>
+                              <FormItem className="transition-all duration-300">
                                 <FormLabel>Confirm Password</FormLabel>
                                 <FormControl>
                                   <Input
                                     type="password"
                                     {...field}
-                                    className="rounded-lg"
+                                    className="rounded-xl border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -311,16 +327,17 @@ export default function Settings() {
                         </div>
                       </div>
 
+                      {/* Save Changes Button */}
                       <div className="flex justify-end">
                         <Button
                           type="submit"
                           disabled={isLoading}
-                          className="rounded-lg px-6 bg-gradient-to-r from-primary to-indigo-600 text-white"
+                          className="rounded-xl px-6 bg-gradient-to-r from-primary to-indigo-600 text-white shadow-lg hover:scale-105 transition-transform duration-300 flex items-center gap-2"
                         >
                           {isLoading && (
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            <Loader2 className="animate-spin h-4 w-4" />
                           )}
-                          <Save className="h-4 w-4 mr-2" /> Save Changes
+                          <Save className="h-4 w-4" /> Save Changes
                         </Button>
                       </div>
                     </form>
@@ -331,24 +348,25 @@ export default function Settings() {
 
             {/* Notifications */}
             {activeTab === "notifications" && (
-              <Card className="shadow-lg rounded-2xl">
+              <Card className="shadow-2xl rounded-3xl transform transition-transform hover:-translate-y-1 hover:shadow-3xl duration-300">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-lg md:text-xl font-semibold text-primary">
                     <Bell className="h-5 w-5 text-primary" /> Notification
                     Preferences
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-muted-foreground">
                     Configure how you receive notifications
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
+
+                <CardContent className="space-y-4">
                   {Object.entries(notifications).map(([key, value]) => (
                     <div
                       key={key}
-                      className="flex items-center justify-between p-3 bg-muted/40 rounded-lg"
+                      className="flex items-center justify-between p-4 bg-white/10 backdrop-blur-md rounded-xl shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300"
                     >
                       <div>
-                        <h4 className="capitalize font-medium">
+                        <h4 className="capitalize font-medium text-gray-200">
                           {key.replace(/([A-Z])/g, " $1")}
                         </h4>
                       </div>
@@ -357,6 +375,7 @@ export default function Settings() {
                         onCheckedChange={(v) =>
                           handleNotificationChange(key, v)
                         }
+                        className="transition-all duration-300"
                       />
                     </div>
                   ))}
@@ -366,32 +385,37 @@ export default function Settings() {
 
             {/* Appearance */}
             {activeTab === "appearance" && (
-              <Card className="shadow-lg rounded-2xl">
+              <Card className="shadow-2xl rounded-3xl transform transition-transform hover:-translate-y-1 hover:shadow-3xl duration-300">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-lg md:text-xl font-semibold text-primary">
                     <Palette className="h-5 w-5 text-primary" /> Appearance
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-muted-foreground">
                     Customize the look and feel of your workspace
                   </CardDescription>
                 </CardHeader>
+
                 <CardContent className="space-y-6">
-                  <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
+                  {/* Dark Mode Toggle */}
+                  <div className="flex items-center justify-between p-4 bg-white/10 backdrop-blur-md rounded-xl shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300">
                     <div>
-                      <h4 className="font-medium">Dark Mode</h4>
-                      <p className="text-sm text-muted-foreground">
+                      <h4 className="font-medium text-gray-200">Dark Mode</h4>
+                      <p className="text-sm text-gray-400">
                         Use dark theme for better visibility
                       </p>
                     </div>
                     <Switch
                       checked={isDarkMode}
                       onCheckedChange={handleThemeToggle}
+                      className="transition-all duration-300"
                     />
                   </div>
-                  <div>
-                    <h4 className="font-medium mb-2">Language</h4>
+
+                  {/* Language Selector */}
+                  <div className="space-y-2">
+                    <h4 className="font-medium text-gray-200">Language</h4>
                     <Select defaultValue="en">
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full rounded-xl border border-gray-300 bg-white/10 backdrop-blur-md focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300">
                         <SelectValue placeholder="Select language" />
                       </SelectTrigger>
                       <SelectContent>
@@ -407,35 +431,71 @@ export default function Settings() {
 
             {/* Security */}
             {activeTab === "security" && (
-              <Card className="shadow-lg rounded-2xl">
+              <Card className="shadow-2xl rounded-3xl transform transition-transform hover:-translate-y-1 hover:shadow-3xl duration-300">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-lg md:text-xl font-semibold text-primary">
                     <Lock className="h-5 w-5 text-primary" /> Security Settings
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-muted-foreground">
                     Manage your account security
                   </CardDescription>
                 </CardHeader>
+
                 <CardContent className="space-y-6">
-                  <div className="p-4 bg-muted/40 rounded-lg">
-                    <h4 className="font-medium mb-2">
-                      Two-Factor Authentication
-                    </h4>
-                    <Button size="sm" variant="outline">
+                  {/* Two-Factor Authentication */}
+                  <div className="p-4 bg-white/10 backdrop-blur-md rounded-xl shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium text-gray-200 mb-1">
+                        Two-Factor Authentication
+                      </h4>
+                      <p className="text-sm text-gray-400">
+                        Add an extra layer of security to your account
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="hover:scale-105 transition-transform duration-300"
+                    >
                       Enable 2FA
                     </Button>
                   </div>
-                  <div className="p-4 bg-muted/40 rounded-lg">
-                    <h4 className="font-medium mb-2">Active Sessions</h4>
-                    <Button size="sm" variant="outline">
+
+                  {/* Active Sessions */}
+                  <div className="p-4 bg-white/10 backdrop-blur-md rounded-xl shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium text-gray-200 mb-1">
+                        Active Sessions
+                      </h4>
+                      <p className="text-sm text-gray-400">
+                        View devices currently logged in
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="hover:scale-105 transition-transform duration-300"
+                    >
                       View Sessions
                     </Button>
                   </div>
-                  <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/20">
-                    <h4 className="font-medium text-destructive mb-2">
-                      Danger Zone
-                    </h4>
-                    <Button size="sm" variant="destructive">
+
+                  {/* Danger Zone */}
+                  <div className="p-4 bg-red-600/10 rounded-xl border border-red-500/20 shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium text-red-500 mb-1">
+                        Danger Zone
+                      </h4>
+                      <p className="text-sm text-red-300">
+                        Deleting your account is permanent. Proceed with
+                        caution.
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      className="hover:scale-105 transition-transform duration-300"
+                    >
                       Delete Account
                     </Button>
                   </div>
@@ -447,17 +507,22 @@ export default function Settings() {
       </div>
 
       {/* Mobile Bottom Tab Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t flex justify-around py-2 z-50">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/10 backdrop-blur-md border-t border-gray-700/20 flex justify-around py-2 z-50 shadow-inner">
         {tabs.map((tab) => (
           <button
             key={tab.key}
-            className={`flex flex-col items-center text-xs ${
-              activeTab === tab.key ? "text-primary" : "text-muted-foreground"
+            className={`flex flex-col items-center text-xs relative transition-all duration-300 ${
+              activeTab === tab.key
+                ? "text-primary scale-110"
+                : "text-muted-foreground hover:scale-105"
             }`}
             onClick={() => setActiveTab(tab.key)}
           >
-            <tab.icon className="h-5 w-5" />
-            {tab.label}
+            <tab.icon className="h-6 w-6" />
+            <span>{tab.label}</span>
+            {activeTab === tab.key && (
+              <span className="absolute -top-1 w-2 h-2 bg-primary rounded-full animate-pulse" />
+            )}
           </button>
         ))}
       </div>
