@@ -1,34 +1,22 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Header } from "@/components/layout/Header";
-import { Dashboard } from "@/components/dashboard/Dashboard";
-import { mockProjects } from "@/data/mockData";
-import { Project, Task } from "@/types";
-import { Background } from "@/components/layout/Background"; // import the background
+import { HomeHeader } from "@/components/home/HomeHeader";
+import { Hero } from "@/components/home/Hero";
+import { Features } from "@/components/home/Features";
+import { CTA } from "@/components/home/CTA";
+import { Background } from "@/components/layout/Background";
 
 const Index = () => {
-  const [projects] = useState<Project[]>(mockProjects);
-  const navigate = useNavigate();
-
-  const handleProjectClick = (project: Project) => navigate(`/projects/${project.id}`);
-  const handleTaskClick = (task: Task) => navigate(`/tasks/${task.id}`);
-  const handleCreateProject = () => navigate("/projects/new");
-  const handleCreateTask = () => navigate("/tasks/new");
-
   return (
     <div className="min-h-screen relative">
       {/* 3D Background */}
       <Background />
 
       <div className="relative z-10">
-        <Header onCreateProject={handleCreateProject} onCreateTask={handleCreateTask} />
-        <Dashboard
-          projects={projects}
-          onProjectClick={handleProjectClick}
-          onTaskClick={handleTaskClick}
-          onCreateProject={handleCreateProject}
-          onCreateTask={handleCreateTask}
-        />
+        <HomeHeader />
+        <main>
+          <Hero />
+          <Features />
+          <CTA />
+        </main>
       </div>
     </div>
   );
