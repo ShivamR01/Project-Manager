@@ -32,7 +32,7 @@ export const SettingsDropdown = () => {
       title: "Logged Out",
       description: "You have been successfully logged out",
     });
-    navigate("/login");
+    navigate("/");
   };
 
   return (

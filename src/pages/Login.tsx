@@ -1,271 +1,331 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Eye, EyeOff, Loader2, Mail, Lock, Chrome } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Loader2,
+  Mail,
+  Lock,
+  Chrome,
+  ArrowLeft,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Separator } from "@/components/ui/separator";
+import * as THREE from "three";
 
 const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  email: z.string().email(),
+  password: z.string().min(6),
   rememberMe: z.boolean().default(false),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
 
-const Login = () => {
+export default function Login() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const leftPanelRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      rememberMe: false,
-    },
+    defaultValues: { email: "", password: "", rememberMe: false },
   });
 
   const onSubmit = async (data: LoginForm) => {
     setIsLoading(true);
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Simple validation for demo purposes
-      if (data.email === "demo@example.com" && data.password === "password123") {
-        toast({
-          title: "Login Successful",
-          description: "Welcome back! Redirecting to dashboard...",
-        });
-        navigate("/");
-      } else {
-        toast({
-          title: "Login Failed",
-          description: "Invalid email or password. Try demo@example.com / password123",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
+    await new Promise((res) => setTimeout(res, 1500));
+    if (data.email === "demo@example.com" && data.password === "password123") {
       toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
+        title: "Login Successful",
+        description: "Redirecting to dashboard...",
+      });
+      navigate("/dashboard");
+    } else {
+      toast({
+        title: "Login Failed",
+        description: "Invalid email or password",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);
-    try {
-      // Simulate Google OAuth flow
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      toast({
-        title: "Login Successful",
-        description: "Google login successful! Welcome back!",
-      });
-      navigate("/");
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Google login failed. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    await new Promise((res) => setTimeout(res, 1500));
+    toast({
+      title: "Login Successful",
+      description: "Google login successful!",
+    });
+    navigate("/dashboard");
+    setIsLoading(false);
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Logo/Brand */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-primary-foreground font-bold text-xl">PM</span>
-            </div>
-            <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              ProjectManager
-            </h1>
-          </div>
-          <p className="text-muted-foreground text-lg">Welcome back! Please sign in to continue</p>
-        </div>
+  // Three.js setup for left panel
+  useEffect(() => {
+    if (!leftPanelRef.current) return;
 
-        <Card className="border-0 bg-card/95 backdrop-blur shadow-elegant">
-          <CardHeader className="space-y-2 text-center pb-4">
-            <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
-            <CardDescription className="text-muted-foreground">
-              Choose your preferred sign in method
+    const scene = new THREE.Scene();
+
+    // Load space background texture
+    const loader = new THREE.TextureLoader();
+    loader.load(
+      "/path/to/space.jpg", // replace with your star/space image path
+      (texture) => {
+        scene.background = texture;
+      },
+      undefined,
+      (err) => console.error("Error loading texture", err)
+    );
+
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      leftPanelRef.current.clientWidth / leftPanelRef.current.clientHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 3;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(
+      leftPanelRef.current.clientWidth,
+      leftPanelRef.current.clientHeight
+    );
+    leftPanelRef.current.appendChild(renderer.domElement);
+
+    const geometry = new THREE.SphereGeometry(1, 32, 32);
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x14b8a6,
+      wireframe: true,
+    });
+    const sphere = new THREE.Mesh(geometry, material);
+    scene.add(sphere);
+
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(5, 5, 5);
+    scene.add(light);
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+      sphere.rotation.y += 0.005;
+      sphere.rotation.x += 0.003;
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      if (!leftPanelRef.current) return;
+      camera.aspect =
+        leftPanelRef.current.clientWidth / leftPanelRef.current.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(
+        leftPanelRef.current.clientWidth,
+        leftPanelRef.current.clientHeight
+      );
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      renderer.dispose();
+    };
+  }, []);
+
+  return (
+    <div className="min-h-screen flex overflow-hidden">
+      {/* LEFT PANEL */}
+      <div className="hidden md:flex w-1/3 relative">
+        {/* Three.js canvas will be injected here */}
+        <div ref={leftPanelRef} className="absolute inset-0" />
+
+        {/* Optional overlay to improve text contrast */}
+        <div className="absolute inset-0 bg-black/30" />
+
+        {/* Text content */}
+        <div className="absolute bottom-10 left-10 text-white text-3xl font-bold drop-shadow-lg">
+          Welcome to <span className="text-teal-300">ProjectManager</span>
+        </div>
+      </div>
+
+      {/* CENTER PANEL - LOGIN CARD */}
+      <div className="flex-1 flex items-center justify-center p-8 relative z-10 bg-gray-50 perspective-1000">
+        <button
+          onClick={() => navigate("/")}
+          className="absolute top-4 left-4 text-gray-700 hover:text-gray-500 transition-colors z-20"
+        >
+          <ArrowLeft className="w-6 h-6" />
+        </button>
+
+        <Card
+          className="w-full max-w-md bg-white/90 backdrop-blur-md rounded-3xl border border-gray-200/30 shadow-2xl transform transition-transform duration-300 hover:rotate-y-2 hover:-rotate-x-2 hover:shadow-3xl"
+          style={{ perspective: "1000px" }}
+        >
+          <CardHeader className="text-center space-y-2 p-6">
+            <CardTitle className="text-3xl font-extrabold text-gray-900 tracking-tight">
+              Sign In
+            </CardTitle>
+            <CardDescription className="text-gray-600 text-lg">
+              Access your account to continue
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Google Login Button */}
+
+          <CardContent className="space-y-6 px-6 pb-6">
             <Button
-              type="button"
               variant="outline"
-              className="w-full h-12 bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm"
+              className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-100 border border-gray-300 text-gray-700 font-medium shadow-sm transition-transform transform hover:scale-105"
               onClick={handleGoogleLogin}
               disabled={isLoading}
             >
               {isLoading ? (
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                <Loader2 className="animate-spin h-5 w-5" />
               ) : (
-                <Chrome className="mr-2 h-5 w-5 text-blue-500" />
+                <Chrome className="h-5 w-5 text-blue-500" />
               )}
               Continue with Google
             </Button>
 
-            <div className="relative">
+            {/* Divider */}
+            <div className="relative text-center my-4">
               <div className="absolute inset-0 flex items-center">
-                <Separator className="w-full" />
+                <div className="border-t w-full border-gray-300/50" />
               </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">Or continue with email</span>
-              </div>
+              <span className="relative px-2 bg-white text-sm text-gray-500 font-medium">
+                Or use email
+              </span>
             </div>
 
+            {/* Form */}
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
+                {/* Email */}
                 <FormField
                   control={form.control}
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel className="text-gray-700 font-medium">
+                        Email
+                      </FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
                           <Input
-                            type="email"
-                            placeholder="Enter your email"
-                            className="pl-10 h-11"
                             {...field}
+                            className="pl-12 h-12 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-400 transition bg-white"
+                            placeholder="Enter your email"
                           />
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-500 text-sm mt-1" />
                     </FormItem>
                   )}
                 />
 
+                {/* Password */}
                 <FormField
                   control={form.control}
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel className="text-gray-700 font-medium">
+                        Password
+                      </FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
                           <Input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Enter your password"
-                            className="pl-10 pr-10 h-11"
                             {...field}
+                            type={showPassword ? "text" : "password"}
+                            className="pl-12 pr-12 h-12 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-400 transition bg-white"
+                            placeholder="Enter your password"
                           />
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition-colors"
                           >
                             {showPassword ? (
-                              <EyeOff className="h-4 w-4" />
+                              <EyeOff className="h-5 w-5" />
                             ) : (
-                              <Eye className="h-4 w-4" />
+                              <Eye className="h-5 w-5" />
                             )}
                           </button>
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-500 text-sm mt-1" />
                     </FormItem>
                   )}
                 />
 
+                {/* Remember & Forgot */}
                 <div className="flex items-center justify-between">
                   <FormField
                     control={form.control}
                     name="rememberMe"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormItem className="flex items-center space-x-3">
                         <FormControl>
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
-                        <div className="space-y-1 leading-none">
-                          <FormLabel className="text-sm font-normal">
-                            Remember me
-                          </FormLabel>
-                        </div>
+                        <FormLabel className="text-sm text-gray-600 font-normal">
+                          Remember me
+                        </FormLabel>
                       </FormItem>
                     )}
                   />
-
                   <Link
                     to="/forgot-password"
-                    className="text-sm text-primary hover:underline transition-colors"
+                    className="text-sm text-blue-600 hover:underline"
                   >
                     Forgot password?
                   </Link>
                 </div>
 
+                {/* Submit */}
                 <Button
                   type="submit"
-                  disabled={isLoading}
                   variant="gradient"
-                  className="w-full h-12"
+                  className="w-full h-12 rounded-xl text-lg font-semibold shadow-md hover:shadow-lg transition-transform transform hover:scale-105"
                 >
                   {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Signing In...
-                    </>
+                    <Loader2 className="animate-spin h-5 w-5" />
                   ) : (
                     "Sign In"
                   )}
                 </Button>
               </form>
             </Form>
-
-            {/* Demo Credentials */}
-            <div className="p-4 bg-muted/50 rounded-lg border border-muted">
-              <p className="text-sm font-medium text-foreground mb-2">Demo credentials:</p>
-              <p className="text-sm font-mono text-muted-foreground">
-                <strong className="text-foreground">Email:</strong> demo@example.com<br />
-                <strong className="text-foreground">Password:</strong> password123
-              </p>
-            </div>
-
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground">
-                Don't have an account?{" "}
-                <Link 
-                  to="/signup" 
-                  className="text-primary hover:text-primary/80 font-medium transition-colors hover:underline"
-                >
-                  Sign up here
-                </Link>
-              </p>
-            </div>
           </CardContent>
         </Card>
       </div>
     </div>
   );
-};
-
-export default Login;
+}
