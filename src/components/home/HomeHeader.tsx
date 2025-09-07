@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/logo";
 import { useNavigate } from "react-router-dom";
 
 export const HomeHeader = () => {
@@ -14,31 +15,34 @@ export const HomeHeader = () => {
     >
       <div className="container flex h-16 items-center justify-between px-4">
         {/* Logo */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="flex items-center gap-2 cursor-pointer"
-          onClick={() => navigate("/")}
-        >
-          <div className="w-8 h-8 bg-gradient-to-r from-primary to-blue-600 rounded-lg flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">PM</span>
-          </div>
-          <span className="text-xl font-bold">ProjectManager</span>
-        </motion.div>
+        <Logo onClick={() => navigate("/")} />
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
+          <button 
+            onClick={() => navigate("/features")}
+            className="text-sm font-medium hover:text-primary transition-colors"
+          >
             Features
-          </a>
-          <a href="#pricing" className="text-sm font-medium hover:text-primary transition-colors">
+          </button>
+          <button 
+            onClick={() => navigate("/pricing")}
+            className="text-sm font-medium hover:text-primary transition-colors"
+          >
             Pricing
-          </a>
-          <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">
+          </button>
+          <button 
+            onClick={() => navigate("/about")}
+            className="text-sm font-medium hover:text-primary transition-colors"
+          >
             About
-          </a>
-          <a href="#contact" className="text-sm font-medium hover:text-primary transition-colors">
+          </button>
+          <button 
+            onClick={() => navigate("/contact")}
+            className="text-sm font-medium hover:text-primary transition-colors"
+          >
             Contact
-          </a>
+          </button>
         </nav>
 
         {/* Auth Buttons */}
